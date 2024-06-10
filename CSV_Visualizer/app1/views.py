@@ -16,6 +16,9 @@ def upload(request):
     if 'myfile' in request.FILES:
         dataset = Dataset()
         file = request.FILES['myfile']
+        
+        # If you want to save the file then just uncomment this code and set the media path of your system directory in path2 variable
+        
         # data=Data(file=file)
         # data.save()  
         # print('rrr',file,str(file))     
