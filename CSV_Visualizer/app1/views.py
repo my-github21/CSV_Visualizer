@@ -16,12 +16,12 @@ def upload(request):
     if 'myfile' in request.FILES:
         dataset = Dataset()
         file = request.FILES['myfile']
-        data=Data(file=file)
-        data.save()  
-        print('rrr',file,str(file))     
+        # data=Data(file=file)
+        # data.save()  
+        # print('rrr',file,str(file))     
 
-        path2 = r'D:\ZappKode\MachineTest\CSV_Visualizer\media\csv_files\\' + str(file)
-        df2 = pd.read_csv(path2)
+        # path2 = r'D:\ZappKode\MachineTest\CSV_Visualizer\media\csv_files\\' + str(file)
+        df2 = pd.read_csv(file)
         print(df2.isna().sum())
         
         context = {
