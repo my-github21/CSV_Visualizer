@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Upload and Display</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .upload-section {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 600px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .file-upload-section {
+            margin-bottom: 20px;
+        }
+        .action-btns {
+            text-align: center;
+        }
+        .data-display {
+            margin: 20px;
+            border: 1px solid #d6d6d6;
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .data-display h1 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .data-display p {
+            color: red;
+        }
+        .histogram-section {
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        .histogram-section img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px 0;
+        }
+        table{
+            border-collapse: collapse;
+            text-align: center;
+        }
+        thead{
+            background-color: #f9f9f9;
+            text-align: center !important;
+        }
+        td, th{
+            padding:5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data" action="{% url 'upload' %}">
+            {% csrf_token %}
+            <div class="upload-section">
+                <div class="file-upload-section">
+                    <input type="file" id="file-upload" name="myfile" required class="form-control">
+                    <p class="text-muted">The upload data should be in CSV format.</p> 
+                </div>
+                <div class="action-btns">
+                    <button type="submit" class="btn btn-danger w-25">Upload</button> 
+                </div>
+            </div>
+        </form>
+
+        <div class="data-display">
+            {% if df2 %}
+            <h1>Data Display</h1>
+            <div class=" ">
+                {{ df2|safe }}
+            </div>
+            {% endif %}
+
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% endif %}
+        </div>
+
+        <div class="data-display">
+            {% if df2_describe %}
+            <h1>Data Describe</h1>
+            <div class=" ">
+                {{ df2_describe|safe }}
+            </div>
+            {% endif %}
+
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% endif %}
+        </div>
+
+        <div class="data-display">
+            {% if df2_missing %}
+            <h1>Missing Value</h1>
+            <div class=" ">
+                {{ df2_missing|safe }}
+            </div>
+            {% endif %}
+
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% endif %}
+        </div>
+
+        <div class="data-display">
+            <h1>Data Overview</h1>
+            <h2>First 10 Rows</h2>
+            <div class=" ">
+                {{ df2|safe }}
+            </div>
+
+            <h2>Data Description</h2>
+            <div class=" ">
+                {{ df2_describe|safe }}
+            </div>
+
+            <h2>Missing Values</h2>
+            <div class=" ">
+                {{ df2_missing|safe }}
+            </div>
+        </div>
+
+        <div class="histogram-section">
+            <h2>Histograms</h2>
+            {% for histogram in histograms %}
+                <div>
+                    <img src="data:image/png;base64,{{ histogram }}" alt="Histogram">
+                </div>
+            {% endfor %} 
+        </div>
+    </div>
+</body>
+</html>
+
+{% comment %} <form method="post" enctype="multipart/form-data" action="{% url 'upload' %}">
+    {% csrf_token %}
+    <div class="upload-section">
+        <div class="file-upload-section">
+
+            <input type="file" id="file-upload" name="myfile" required>
+            <p>The upload data should be in CSV format.</p> 
+        </div>
+
+        <div class="action-btns">
+            <button type="submit" class="btn btn-danger w-25" >Upload</button> 
+
+        </div>
+    </div>              
+          
+</form>
+
+<div>
+    {% if df2 %}
+    <h1>Data Display</h1>
+    {{ df2|safe }} <!-- Use the |safe filter to render HTML content -->
+{% endif %}
+
+{% if error_message %}
+    <p>{{ error_message }}</p>
+{% endif %}
+</div>
+
+<div>
+    {% if df2_describe %}
+    <h1>Data Describe</h1>
+    {{ df2_describe|safe }} <!-- Use the |safe filter to render HTML content -->
+{% endif %}
+
+{% if error_message %}
+    <p>{{ error_message }}</p>
+{% endif %}
+</div>
+
+
+<div>
+    {% if df2_missing %}
+    <h1>Missing Value</h1>
+    {{ df2_missing|safe }} <!-- Use the |safe filter to render HTML content -->
+{% endif %}
+
+{% if error_message %}
+    <p>{{ error_message }}</p>
+{% endif %}
+</div>
+
+<h1>Data Overview</h1>
+
+<h2>First 10 Rows</h2>
+<div>
+    {{ df2|safe }}
+</div>
+
+<h2>Data Description</h2>
+<div>
+    {{ df2_describe|safe }}
+</div>
+
+<h2>Missing Values</h2>
+<div>
+    {{ df2_missing|safe }}
+</div>
+
+<h2>Histograms</h2>
+{% for histogram in histograms %}
+    <div>
+        <img src="data:image/png;base64,{{ histogram }}" alt="Histogram">
+    </div>
+{% endfor %}  {% endcomment %}
