@@ -1,4 +1,4 @@
-# CSV_Visualizer
+# PyDataViz
 A Django-based web application for uploading CSV files and visualizing the data. The application provides a user-friendly interface to upload CSV files and displays various insights including the first 10 rows of the data, a descriptive summary, missing value counts, and histograms for numerical columns.
 
 ## Features
